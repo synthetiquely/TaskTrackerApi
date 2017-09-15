@@ -1,16 +1,20 @@
 import Koa from 'koa';
 import logger from 'koa-morgan';
-import Router from 'koa-router';
-// import bodyParser from 'koa-body';
+import cors from 'kcors';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import Promise from 'bluebird';
 
+import authRouter from './routes/auth';
+
+dotenv.config();
 const app = new Koa();
-const router = new Router();
-
-router.get('/', (ctx) => {
-  ctx.body = 'Hello from API.';
-});
+mongoose.Promise = Promise;
+mongoose.connect(process.env.MONGODB_URL, { useMongoClient: true });
 
 app
+  .use(cors())
   .use(logger('tiny'))
-  .use(router.routes())
-  .listen(8080);
+  .use(authRouter.routes())
+  .use(authRouter.allowedMethods())
+  .listen(process.env.HOST);
