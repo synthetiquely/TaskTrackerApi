@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import bcryptjs from 'bcryptjs';
 import uniqueValidator from 'mongoose-unique-validator';
 import jwt from 'jsonwebtoken';
+import randomstring from 'randomstring';
 
 // TODO: check for email uniquness
 const schema = new mongoose.Schema({
@@ -57,6 +58,14 @@ schema.methods.toAuthJSON = function toAuthJSON() {
     confirmed: this.confirmed,
     token: this.generateJWT(),
   };
+};
+
+schema.methods.setConfirmationToken = function setConfirmationToken() {
+  this.confirmationToken = randomstring.generate();
+};
+
+schema.methods.generateConfirmationUrl = function generateConfirmationUrl() {
+  return `${process.env.CLIENT}/user/confirmation/${this.confirmationToken}`;
 };
 
 schema.plugin(uniqueValidator, { message: 'This email is already taken.' });
