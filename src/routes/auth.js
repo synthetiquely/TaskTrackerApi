@@ -1,8 +1,10 @@
 import Router from 'koa-router';
-import bodyParser from 'koa-body';
 
 const router = new Router();
 
-router.post('/api/user/signup', bodyParser, (ctx) => {
-  ctx.body = 'hello';
+router.post('/api/user/signup', (ctx) => {
+  console.log(ctx.request.body);
+  ctx.body = { success: true };
 });
+
+export default router;

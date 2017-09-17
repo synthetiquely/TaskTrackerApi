@@ -1,5 +1,6 @@
 import Koa from 'koa';
 import logger from 'koa-morgan';
+import bodyParser from 'koa-body';
 import cors from 'kcors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
@@ -14,7 +15,8 @@ mongoose.connect(process.env.MONGODB_URL, { useMongoClient: true });
 
 app
   .use(cors())
+  .use(bodyParser())
   .use(logger('tiny'))
-  .use(authRouter.routes())
   .use(authRouter.allowedMethods())
+  .use(authRouter.routes())
   .listen(process.env.HOST);
