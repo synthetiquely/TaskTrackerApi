@@ -4,7 +4,6 @@ import uniqueValidator from 'mongoose-unique-validator';
 import jwt from 'jsonwebtoken';
 import randomstring from 'randomstring';
 
-// TODO: check for email uniquness
 const schema = new mongoose.Schema({
   name: {
     type: String,
@@ -33,6 +32,12 @@ const schema = new mongoose.Schema({
     type: String,
     default: false,
   },
+  projectsCreated: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Project',
+    },
+  ],
 }, { timestamps: true });
 
 schema.methods.isValidPassword = function isValidPassword(password) {
