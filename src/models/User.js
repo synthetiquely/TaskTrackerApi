@@ -52,6 +52,7 @@ schema.methods.generateJWT = function generateJWT() {
   return jwt.sign({
     name: this.name,
     email: this.email,
+    role: this.role,
     confirmed: this.confirmed,
   }, process.env.JWT_SECRET);
 };
@@ -60,6 +61,7 @@ schema.methods.toAuthJSON = function toAuthJSON() {
   return {
     name: this.name,
     email: this.email,
+    role: this.role,
     confirmed: this.confirmed,
     token: this.generateJWT(),
   };

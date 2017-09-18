@@ -4,6 +4,26 @@ import Project from '../models/Project';
 
 const router = new Router();
 
+router.post('/api/projects', async (ctx) => {
+  const { email } = ctx.request.body;
+  const user = await User.findOne({ email });
+  let projects = [];
+  if (user) {
+    if (user.role === 'Manager') {
+      projects = await Project.find({ _creator: user.email });
+      ctx.status = 200;
+      ctx.body = { projects };
+    } else {
+      projects = await Project.find({ teamMembers: user.email });
+      ctx.status = 200;
+      ctx.body = { projects };
+    }
+  } else {
+    ctx.status = 400;
+    ctx.body = { error: 'No users with such email' };
+  }
+});
+
 router.post('/api/project/new', async (ctx) => {
   const {
     title, description, avatar, creator,
