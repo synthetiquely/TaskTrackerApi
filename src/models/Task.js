@@ -10,28 +10,30 @@ const schema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    avatar: {
+    status: {
       type: String,
       required: true,
+      default: 'Waiting',
     },
     _creator: {
       type: String,
       ref: 'User',
     },
-    teamMembers: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-      },
-    ],
-    tasks: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Task',
-      },
-    ],
+    _assignee: {
+      type: String,
+      ref: 'User',
+    },
+    budgetTime: {
+      type: Number,
+      required: true,
+    },
+    actualTime: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
   },
   { timestamps: true },
 );
 
-export default mongoose.model('Project', schema);
+export default mongoose.model('Task', schema);
