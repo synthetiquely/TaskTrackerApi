@@ -32,6 +32,12 @@ const schema = new mongoose.Schema(
       required: true,
       default: 0,
     },
+    comments: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment',
+      },
+    ],
   },
   { timestamps: true },
 );
